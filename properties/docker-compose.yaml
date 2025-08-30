@@ -1,0 +1,54 @@
+services:
+  # PostgreSQL database service
+  postgres:
+    image: postgres:latest  # Use official PostgreSQL Docker image, latest version
+    container_name: property_postgres  # Custom name for this container
+    
+    # Environment variables that PostgreSQL container uses for setup
+    environment:
+      POSTGRES_DB: property_listings      # Name of the database to create
+      POSTGRES_USER: property_user        # Username for database access
+      POSTGRES_PASSWORD: property_pass    # Password for database access
+    
+    # Port mapping: host_port:container_port
+    ports:
+      - "5432:5432"  # Map host port 5432 to container port 5432 (PostgreSQL default)
+    
+    # Volumes persist data even when container is destroyed
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Store DB data in named volume
+    
+    # Health check to know when PostgreSQL is ready to accept connections
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U property_user -d property_listings"]  # Test connection
+      interval: 30s    # Check every 30 seconds
+      timeout: 10s     # Wait max 10 seconds for response
+      retries: 3       # Try 3 times before marking as unhealthy
+
+  # Redis cache service
+  redis:
+    image: redis:latest  # Use official Redis Docker image, latest version
+    container_name: property_redis  # Custom name for this container
+    
+    # Port mapping for Redis
+    ports:
+      - "6379:6379"  # Map host port 6379 to container port 6379 (Redis default)
+    
+    # Custom command to run Redis with persistence enabled
+    command: redis-server --appendonly yes  # Enable Redis persistence (saves data to disk)
+    
+    # Volume to persist Redis data
+    volumes:
+      - redis_data:/data  # Store Redis data in named volume
+    
+    # Health check to know when Redis is ready
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]  # Test Redis with PING command
+      interval: 30s    # Check every 30 seconds
+      timeout: 10s     # Wait max 10 seconds for response
+      retries: 3       # Try 3 times before marking as unhealthy
+
+# Named volumes - Docker manages these and persists data between container restarts
+volumes:
+  postgres_data:  # Volume for PostgreSQL data
+  redis_data:     # Volume for Redis data
