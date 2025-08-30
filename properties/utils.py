@@ -92,6 +92,7 @@ def get_redis_cache_metrics():
         total_requests = hits + misses
         
         # Step 4: Calculate hit ratio (percentage of requests served from cache)
+        # if total_requests > 0 else 0   
         if total_requests > 0:
             hit_ratio = hits / total_requests
         else:
