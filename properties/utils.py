@@ -1,11 +1,7 @@
 # Import Django's cache system
 from django.core.cache import cache
-# Import django-redis to get direct Redis connection
-from django_redis import get_redis_connection
 # Import logging for tracking metrics
 import logging
-# Import our Property model
-from .models import Property
 
 # Set up logger for cache metrics
 logger = logging.getLogger('cache_metrics')
@@ -23,6 +19,8 @@ def get_all_properties():
     Cache key: 'all_properties'
     Cache TTL: 3600 seconds (1 hour)
     """
+    # Import Property model INSIDE function to avoid AppRegistryNotReady error
+    from .models import Property
     
     # Step 1: Try to get data from Redis cache
     # cache.get() returns None if key doesn't exist
@@ -75,6 +73,9 @@ def get_redis_cache_metrics():
     """
     
     try:
+        # Import django-redis INSIDE function to avoid AppRegistryNotReady error
+        from django_redis import get_redis_connection
+        
         # Step 1: Get direct connection to Redis
         # This bypasses Django's cache framework and talks to Redis directly
         redis_client = get_redis_connection("default")
@@ -131,6 +132,9 @@ def reset_redis_cache_stats():
     Useful for testing or starting fresh metrics collection.
     """
     try:
+        # Import django-redis INSIDE function to avoid AppRegistryNotReady error
+        from django_redis import get_redis_connection
+        
         redis_client = get_redis_connection("default")
         # FLUSHDB removes all keys from current database
         # CONFIG RESETSTAT resets the hit/miss counters

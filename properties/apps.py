@@ -1,6 +1,6 @@
 # Import Django's app configuration system
 from django.apps import AppConfig
-import properties.signals
+
 
 class PropertiesConfig(AppConfig):
     """
@@ -27,5 +27,5 @@ class PropertiesConfig(AppConfig):
         """
         
         # When we import signals.py, the @receiver decorators automatically register the handlers
-        
+        import properties.signals
         print("Properties app ready - signal handlers registered")
