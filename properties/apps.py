@@ -27,5 +27,5 @@ class PropertiesConfig(AppConfig):
         """
         
         # When we import signals.py, the @receiver decorators automatically register the handlers
-        import properties.signals
+        import properties.signals   # imported here to avoid circular imports
         print("Properties app ready - signal handlers registered")
