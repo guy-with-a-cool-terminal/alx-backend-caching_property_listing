@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Property Listings</title>
+    <style>
+        /* Basic styling for readability */
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .property { border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 5px; }
+        .price { color: green; font-weight: bold; font-size: 1.2em; }
+        .location { color: #666; }
+        .date { color: #999; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Property Listings</h1>
+    
+    <!-- Show total count of properties -->
+    <p>Total Properties: {{ total_count }}</p>
+    
+    <!-- Check if we have any properties -->
+    {% if properties %}
+        <!-- Loop through each property and display it -->
+        {% for property in properties %}
+            <div class="property">
+                <h3>{{ property.title }}</h3>
+                <p class="price">${{ property.price }}</p>
+                <p class="location">📍 {{ property.location }}</p>
+                <p>{{ property.description }}</p>
+                <p class="date">Listed: {{ property.created_at|date:"M d, Y" }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <!-- Show message if no properties exist -->
+        <p>No properties available yet.</p>
+        <p><a href="/admin/">Add some properties via admin panel</a></p>
+    {% endif %}
+    
+    <!-- Cache information for testing -->
+    <hr>
+    <p><small>
+        This page is cached for 15 minutes. Refresh to see if you get cached version!<br>
+        Add ?format=json to URL to see JSON version.
+    </small></p>
+</body>
+</html>
