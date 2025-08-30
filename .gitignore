@@ -1,0 +1,36 @@
+# Ignore virtual environments
+myenv/
+venv/
+*/myenv/
+*/env/
+*/venv/
+env
+*.env
+env
+/myenv
+myenv
+.git
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code / Codium
+.vscode/
+
+# Test artifacts
+*.log
+.pytest_cache/
+.tox/
+coverage.*
+htmlcov/
+.cache/
+
+# Distribution/build
+build/
+dist/
+*.egg-info/
+
+myenv
